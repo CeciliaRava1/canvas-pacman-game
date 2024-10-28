@@ -10,6 +10,12 @@ function drawPacman(x, y, radius, mouthAngle, ctx) {
   ctx.lineTo(x, y);
   ctx.fillStyle = "yellow";
   ctx.fill();
+
+  ctx.beginPath();
+  ctx.arc(x - 10, y - 24, 6, 0, 2 * Math.PI);
+  ctx.lineTo(x, y);
+  ctx.fillStyle = "black";
+  ctx.fill();
 }
 
 function updateMouth() {
