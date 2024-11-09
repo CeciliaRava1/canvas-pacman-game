@@ -6,6 +6,15 @@ let mouthSpeed = 0.1;
 let direction = "ArrowRight";
 let on = false;
 const startButton = document.querySelector('.start-button');
+let lives = 10;
+
+const score = () => {
+  ctx.save();
+  ctx.fillStyle = 'white';
+  ctx.font = 'bold 40px Courier';
+  ctx.fillText('LIVES: ' + lives, 640, 50);
+  ctx.restore();
+}
 
 
 // events
@@ -93,6 +102,28 @@ function updateMouth() {
 }
 
 function updatePosition() {
+
+  if (detectCollision(x, y, radius, canvas, direction)) {
+    lives -= 1;
+
+    if (lives ==0){
+
+      console.log('You lost!')
+      on = false;
+      startButton.textContent = 'start';
+      x = 50;
+      y = 50;
+      lives = 10;
+
+    } else {
+
+      x = 50;
+      y = 50;
+      direction = 'ArrowRight';
+    }
+    return
+  }
+
   switch (direction) {
     case "ArrowRight":
       x += 1;
@@ -118,7 +149,38 @@ function drawFrame() {
   drawPacman(x, y, radius, mouthAngle, ctx);
   updatePosition();
   updateMouth();
+  score();
 }
+
+function detectCollision(xCircle, yCircle, radius, canvas, direction) {
+  if (xCircle + radius >= canvas.width && direction === "ArrowRight") {
+    // Colisión detectada con la pared derecha
+    return true;
+  }
+
+  if (xCircle - radius <= 0 && direction === "ArrowLeft") {
+    // Colisión detectada con la pared izquierda
+    return true;
+  }
+
+  if (yCircle + radius >= canvas.height && direction === "ArrowDown") {
+    // Colisión detectada con la pared inferior
+    return true;
+  }
+
+  if (yCircle - radius <= 0 && direction === "ArrowUp") {
+    // Colisión detectada con la pared superior
+    return true;
+  }
+
+  return false;
+}  
+
+
+
+
+
+
 
 // Canvas setup
 // bucle principal
